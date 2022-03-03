@@ -36,27 +36,6 @@
 (def dot-basic-map ["basicsId" "dotNumber" "measureValue" "seriousViolationFromInvestigationPast12MonthIndicator" "totalInspectionWithViolation" "totalViolation"])
 
 
-;; (defn for-str  [string]
-;;   (loop [cnt-str 0]
-;;     (when (< cnt-str (count string))
-;;       (loop [cnt-dot 0]
-;;         (when (< cnt-dot (count dot-basic-map))
-;;           (if (clojure.string/includes? (get string cnt-str) (get dot-basic-map cnt-dot))
-;;             (spit "data.csv" (str (second (clojure.string/split (get string cnt-str) #":")) (if (<= (- (count dot-map) 1) cnt-dot) "\n" ",")) :append true)
-;;             )
-;;           (recur (inc cnt-dot))))
-;;       (recur (inc cnt-str)))))
-
-
-;; (defn for-str  [string]
-;;   (loop [cnt-str 0]
-;;     (when (< cnt-str (count string))
-;;       (loop [cnt-dot 0]
-;;         (when (< cnt-dot (count dot-basic-map))
-;;           (if (clojure.string/includes? (get string cnt-str) (get dot-basic-map cnt-dot))
-;;             (println (get string cnt-str) (str (last (clojure.string/split (get string cnt-str) #":")) (if (<= (- (count dot-basic-map) 1) cnt-dot) "\n" ","))))
-;;           (recur (inc cnt-dot))))
-;;       (recur (inc cnt-str)))))
 
 
 (defn for-str  [string]
@@ -80,74 +59,21 @@
        for-str))
 
 ;;good version of web-calls-to-csv-basic
-;; (loop [i 7000]
-;;   (when (> i 1000)
-;;     (client/get (str path i web-key-basic)
-;;                 {:async? true}
-;;             ;; response callback
-;;                 (fn [response]  (if (> 66 (count (get response :body)))
-;;                                   nil
-;;                                   (print-to-csv (get response :body)))
-;;                   (Thread/sleep 15))
-;;             ;; raise callback
-;;                 (fn [exception] (println "exception message is: " (.getMessage exception))))
-;;     (Thread/sleep 10)
-;;     (recur (- i 1))))
+ (loop [i 7000]
+   (when (> i 1000)
+     (client/get (str path i web-key-basic)
+                 {:async? true}
+             ;; response callback
+                 (fn [response]  (if (> 66 (count (get response :body)))
+                                   nil
+                                   (print-to-csv (get response :body)))
+                   (Thread/sleep 15))
+             ;; raise callback
+                 (fn [exception] (println "exception message is: " (.getMessage exception))))
+     (Thread/sleep 10)
+     (recur (- i 1))))
 
 
-        ;; (client/get (str path 1076656 web-key-basic)
-        ;;     {:async? true}
-        ;;     ;; response callback
-        ;;     (fn [response]  (if (> 66 (count (get response :body)))
-        ;;                       nil
-        ;;                       (print-to-csv (get response :body))))
-        ;;     ;; raise callback
-        ;;     (fn [exception] (println "exception message is: " (.getMessage exception))))
-
-;; (loop [i 403371]
-;;   (when (> i 400000)
-;;         (client/get (str path i web-key-basic)
-;;             {:async? true}
-;;             ;; response callback
-;;             (fn [response]  (doseq [res response]
-;;                               (if (> 66 (count (get res :body)))
-;;                                nil
-;;                                (print-to-csv (get res :body)))
-;;                               (Thread/sleep 500)))
-;;             ;; raise callback
-;;             (fn [exception] (println "exception message is: " (.getMessage exception))))
-;;     (recur (- i 1))))
-
-
-;; (loop [i 463371]
-;;   (when (> i 400000)
-;;         (client/get (str path i web-key-basic)
-;;             {:async? true}
-;;             ;; response callback
-;;             (fn [response] (if (> 66 (count (get response :body)))
-;;                                nil
-;;                                (print-to-csv (get response :body)))))
-;;             ;; raise callback
-;;             (fn [exception] (println "exception message is: " (.getMessage exception))))
-;;     (recur (- i 1)))
-
-
-
-;; (for [i (range 3731074)]
-;;     (client/get (str path i web-key)
-;;             {:async? true}
-;;             ;; response callback
-;;             (fn [response]  (print-to-csv (get response :body)))
-;;             ;; raise callback
-;;             (fn [exception] (println "exception message is: " (.getMessage exception))))
-;; )
-
-
-;; (for [e (range (count dot-map))]
-;;   (for [i (range (count dot-issue1))]
-;;     (if (clojure.string/includes? (get dot-issue1 i) (get dot-map e))
-;;       (spit "data.csv" (str (second (clojure.string/split (get dot-issue1 i) #":")) (if (<= (- (count dot-map) 1) e) "\n" ",")) :append true)
-;;       ))) 
 
 
 
